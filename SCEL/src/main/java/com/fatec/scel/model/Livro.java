@@ -38,7 +38,9 @@ public class Livro {
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		if(id != null) {
+			this.id = id;
+		}
 	}
 
 	public Long getId() {
@@ -50,7 +52,9 @@ public class Livro {
 	}
 
 	public void setIsbn(String isbn) {
-		this.isbn = isbn;
+		if(isbn != null) {
+			this.isbn = isbn;
+		}
 	}
 
 	public String getTitulo() {
@@ -58,7 +62,9 @@ public class Livro {
 	}
 
 	public void setTitulo(String titulo) {
-		this.titulo = titulo;
+		if(titulo != null) {
+			this.titulo = titulo;
+		}
 	}
 
 	public String getAutor() {
@@ -66,7 +72,9 @@ public class Livro {
 	}
 
 	public void setAutor(String autor) {
-		this.autor = autor;
+		if(titulo != null) {
+			this.autor = autor;
+		}
 	}
 
 	};

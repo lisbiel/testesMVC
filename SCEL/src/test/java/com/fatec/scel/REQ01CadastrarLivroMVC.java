@@ -40,4 +40,19 @@ public class REQ01CadastrarLivroMVC {
 		ModelResultMatchers model = MockMvcResultMatchers.model();
 		resultActions.andExpect(model.attributeExists("livro"));
 	}
+	
+	@Test
+	public void status1() throws Exception {
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/livros/consulta"));
+		resultActions.andExpect(MockMvcResultMatchers.status().isOk());
+		resultActions.andExpect(MockMvcResultMatchers.status().is(200));
+	}
+	
+	@Test
+	public void verificaView1() throws Exception {
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/livros/consulta"));
+		ViewResultMatchers view = MockMvcResultMatchers.view();
+		resultActions.andExpect(view.name("ConsultarLivros"));
+	}
+
 }

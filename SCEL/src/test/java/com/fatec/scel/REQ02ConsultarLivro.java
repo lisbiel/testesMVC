@@ -1,6 +1,9 @@
 package com.fatec.scel;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +30,17 @@ public class REQ02ConsultarLivro {
 		// cadastrado com sucesso
 		Livro ro = repository.findByIsbn("3333");
 		assertThat(ro.getTitulo()).isEqualTo(livro.getTitulo());
+	}
+	
+	@Test
+	public void test1() {
+		// dado que nao existem livros cadastrados
+		repository.deleteAll();
+		// quando o usurio inclui as informacoes obrigatorias e confirma a operacao
+		livro = new Livro("3333", "Teste de Software", "Delamaro");
+		repository.save(livro);
+		// entao o sistema valida as informações E envia uma mensagem de aluno
+		// cadastrado com sucesso
+		assertThat(repository.findByIsbn("1234")).isEqualTo(null);
 	}
 }

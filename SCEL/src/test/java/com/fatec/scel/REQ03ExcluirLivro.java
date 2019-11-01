@@ -1,6 +1,7 @@
 package com.fatec.scel;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -34,5 +35,21 @@ class REQ03ExcluirLivro {
 		// cadastrado com sucesso
 		assertThat(repository.findByIsbn("3333")).isEqualTo(null);
 	}
-
+	
+	@Test
+	public void CT02ExcluirLivroErrado() {
+		// dado que o isbn nao esta cadastrado
+		repository.deleteAll();
+		// quando o usurio inclui as informacoes obrigatorias e confirma a operacao
+		Livro livro = new Livro("3333", "Teste de Software", "Delamaro");
+		repository.save(livro);
+		Livro ro = repository.findByIsbn("3333");
+		try {
+			repository.deleteById(ro.getId()-1);
+		} catch (RuntimeException e) {
+			assertEquals("No class com.fatec.scel.model.Livro entity with id 0 exists!",e.getMessage());
+		}
+		// entao o sistema valida as informações E envia uma mensagem de livro
+		// cadastrado com sucesso
+	}
 }
