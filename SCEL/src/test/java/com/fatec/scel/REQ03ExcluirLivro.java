@@ -44,10 +44,11 @@ class REQ03ExcluirLivro {
 		Livro livro = new Livro("3333", "Teste de Software", "Delamaro");
 		repository.save(livro);
 		Livro ro = repository.findByIsbn("3333");
+		long id = ro.getId()-1;
 		try {
-			repository.deleteById(ro.getId()-1);
+			repository.deleteById(id);
 		} catch (RuntimeException e) {
-			assertEquals("No class com.fatec.scel.model.Livro entity with id 0 exists!",e.getMessage());
+			assertEquals("No class com.fatec.scel.model.Livro entity with id "+ id +" exists!",e.getMessage());
 		}
 		// entao o sistema valida as informações E envia uma mensagem de livro
 		// cadastrado com sucesso
