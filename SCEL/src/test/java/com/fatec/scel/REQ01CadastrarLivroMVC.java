@@ -54,5 +54,12 @@ public class REQ01CadastrarLivroMVC {
 		ViewResultMatchers view = MockMvcResultMatchers.view();
 		resultActions.andExpect(view.name("ConsultarLivros"));
 	}
+	
+	@Test
+	public void statusUsuario0() throws Exception {
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/usuarios/cadastrar"));
+		resultActions.andExpect(MockMvcResultMatchers.status().isOk());
+		resultActions.andExpect(MockMvcResultMatchers.status().is(200));
+	}
 
 }
