@@ -17,17 +17,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.fatec.scel.model.Livro;
 import com.fatec.scel.model.LivroRepository;
 import com.fatec.scel.model.Usuario;
+import com.fatec.scel.model.UsuarioRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-class REQ04Usuario {
+class REQ05CadastrarUsuario {
 	@Autowired
-	LivroRepository repository;
+	UsuarioRepository repository;
 	private Validator validator;
 	private ValidatorFactory validatorFactory;
+	
+	@Test
+	void CT01CadastrarUsuarioSucesso() {
+		Usuario usuario = new Usuario("1234", "Humberto Doisberto", "hum@berto.com", "09405-240", "Rua ALegre");
+		repository.save(usuario);
+		assertEquals(repository.findByRa("1234").getNome(), usuario.getNome());
+	}
 	
 	@Test
 	void CT01SetRASucesso() {

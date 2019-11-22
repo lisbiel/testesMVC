@@ -2,6 +2,7 @@ package com.fatec.scel;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -48,7 +49,7 @@ class REQ03ExcluirLivro {
 		try {
 			repository.deleteById(id);
 		} catch (RuntimeException e) {
-			assertEquals("No class com.fatec.scel.model.Livro entity with id "+ id +" exists!",e.getMessage());
+			assertThat(e.getMessage().equals("No class com.fatec.scel.model.Livro entity with id "+ id +" exists!"));
 		}
 		// entao o sistema valida as informações E envia uma mensagem de livro
 		// cadastrado com sucesso
