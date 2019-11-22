@@ -16,6 +16,14 @@ public class Emprestimo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	@Column(name = "isbn", nullable = false, length = 4)
 	@NotEmpty(message = "O isbn deve ser preenchido")
 	private String isbn;

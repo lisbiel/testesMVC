@@ -38,26 +38,28 @@ public class EmprestimoController {
 	}
 
 	@PostMapping("/save")
-	public ModelAndView save(@Valid Livro livro, BindingResult result) {
-		ModelAndView mv = new ModelAndView("CadastrarLivro");
+	public ModelAndView save(@Valid Emprestimo emprestimo, BindingResult result) {
+		ModelAndView modelAndView = new ModelAndView("ConsultarEmprestimo");
 		if (result.hasErrors()) {
-			mv.addObject("fail", "Dados inválidos"); // quando fail nao eh nulo a msg aparece na tela
-			return mv;
+			return new ModelAndView("RegistrarEmprestimo");
 		}
 		try {
-			Livro jaExiste = null;
-			jaExiste = livroRepository.findByIsbn(livro.getIsbn());
-			if (jaExiste == null) {
-				livroRepository.save(livro);
-				mv.addObject("success", "Livro cadastrado com sucesso"); // success nao eh nulo
-				return mv;
+			Livro livro = null;
+			Usuario usuario = null;
+			livro = livroRepository.findByIsbn(emprestimo.getIsbn());
+			usuario = usuarioRepository.findByRa(emprestimo.getRa());
+			if (livro != null && usuario != null) { // verfica se o livro existe e se o usuário existe.
+				emprestimo.setDataEmprestimo();
+				emprestimoRepository.save(emprestimo);
+				modelAndView = new ModelAndView("ConsultarEmprestimo");
+				modelAndView.addObject("emprestimos", emprestimoRepository.findAll());
+				return modelAndView;
 			} else {
-				mv.addObject("fail", "Livro já cadastrado."); // fail nao eh nulo a msg aparece na tela
-				return mv;
+				return new ModelAndView("RegistrarEmprestimo");
 			}
 		} catch (Exception e) {
-			mv.addObject("fail", "erro ===> " + e.getMessage());
-			return mv;
+			System.out.println("erro ===> " + e.getMessage());
+			return modelAndView; // captura o erro mas nao informa o motivo.
 		}
 	}
 

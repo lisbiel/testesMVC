@@ -3,6 +3,10 @@ package com.fatec.scel;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
@@ -30,15 +34,30 @@ class REQ09CadastrarEmprestimo {
 		Usuario usuario = new Usuario("1234", "Humberto Doisberto", "hum@berto.com", "09405-240", "Rua ALegre");
 		Livro livro = new Livro("3333", "Teste de Software", "Delamaro");
 		Emprestimo emprestimo = new Emprestimo(livro.getIsbn(), usuario.getRa());
-		assertThat(emprestimo.getIsbn().equals(livro.getIsbn()) && emprestimo.getRa().equals(usuario.getRa()));
+		repository.save(emprestimo);
+		assertEquals(repository.count(), 1);
 	}
 	
 	@Test
-	void CT01CadastrarEmprestimoLivroInexistente() {
-		Usuario usuario = new Usuario("1234", "Humberto Doisberto", "hum@berto.com", "09405-240", "Rua ALegre");
-		//Livro livro = new Livro("3333", "Teste de Software", "Delamaro");
-		Emprestimo emprestimo = new Emprestimo("1234", usuario.getRa());
-		assertThat(emprestimo.getIsbn().isEmpty());
+	void CT01CadastrarEmprestimoSemISBN() {
+		validatorFactory = Validation.buildDefaultValidatorFactory();
+		validator = validatorFactory.getValidator();
+		Emprestimo emprestimo = new Emprestimo("","1234");
+		Set<ConstraintViolation<Emprestimo>> violations = validator.validate(emprestimo);
+		// then:
+		assertEquals(violations.size(), 1);
+		assertEquals("O isbn deve ser preenchido", violations.iterator().next().getMessage());
+	}
+	
+	@Test
+	void CT01CadastrarEmprestimoSemRa() {
+		validatorFactory = Validation.buildDefaultValidatorFactory();
+		validator = validatorFactory.getValidator();
+		Emprestimo emprestimo = new Emprestimo("3333","");
+		Set<ConstraintViolation<Emprestimo>> violations = validator.validate(emprestimo);
+		// then:
+		assertEquals(violations.size(), 1);
+		assertEquals("O RA deve ser preenchido", violations.iterator().next().getMessage());
 	}
 
 }
